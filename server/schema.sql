@@ -1,7 +1,7 @@
 CREATE DATABASE shop_cheaper;
 
 CREATE TABLE store (
-  name VARCHAR(255) PRIMARY KEY,
+  username VARCHAR(255) PRIMARY KEY,
   url_prefix VARCHAR(255) NOT NULL UNIQUE,
   tag VARCHAR(255) NOT NULL,
   attrs VARCHAR(255) NOT NULL
@@ -10,16 +10,15 @@ CREATE TABLE store (
 CREATE TABLE user (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(255) NOT NULL UNIQUE,
-  last_name VARCHAR(255) NOT NULL,
-  first_name VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL
 )
 
 CREATE TABLE item (
   id INT NOT NULL AUTO_INCREMENT,
   store_id INT,
-  url VARCHAR(255) NOT NULL,
+  item_url VARCHAR(255) NOT NULL,
   PRIMARY KEY (id, store_id),
-  FOREIGN KEY store_id REFERENCES store
+  FOREIGN KEY store_id REFERENCES store ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 CREATE TABLE alert (
@@ -27,8 +26,10 @@ CREATE TABLE alert (
   user_id INT NOT NULL,
   item_id INT NOT NULL,
   store_id INT NOT NULL,
-  FOREIGN KEY user_id REFERENCES user,
-  FOREIGN KEY (item_id, store_id) REFERENCES (item.id, item.store_id)
+  price_limit REAL NOT NULL,
+  last_notified DATETIME,
+  FOREIGN KEY user_id REFERENCES user ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (item_id, store_id) REFERENCES (item.id, item.store_id) ON DELETE NO ACTION ON UPDATE CASCADE
 )
 
 CREATE TABLE item_price (
@@ -37,5 +38,5 @@ CREATE TABLE item_price (
   store_id INT NOT NULL,
   price REAL NOT NULL,
   PRIMARY KEY (recorded_at, item_id, store_id),
-  FOREIGN KEY (item_id, store_id) REFERENCES (item.id, item.store_id)
+  FOREIGN KEY (item_id, store_id) REFERENCES (item.id, item.store_id) ON DELETE CASCADE ON UPDATE CASCADE
 )
