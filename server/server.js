@@ -14,7 +14,7 @@ const con = mysql.createConnection({
 });
 
 const PORT = 4000;
-app.listen(port, () => {
+app.listen(PORT, () => {
 	console.log(`Server started on http://localhost:${PORT}`);
 });
 

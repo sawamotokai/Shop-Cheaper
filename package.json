@@ -1,0 +1,29 @@
+{
+	"name": "shop-cheaper",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"server": "cd server && nodemon server.js",
+		"client": "cd client && npm start",
+		"dev": "concurrently \"npm run server\" \"npm run client\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sawamotokai/Price-Tracker.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/sawamotokai/Price-Tracker/issues"
+	},
+	"homepage": "https://github.com/sawamotokai/Price-Tracker#readme",
+	"dependencies": {
+		"axios": "^0.19.2",
+		"concurrently": "^5.1.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mysql": "^2.18.1"
+	}
+}
