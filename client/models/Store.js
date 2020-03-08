@@ -1,6 +1,6 @@
-class Shop {
+class Store {
 	constructor(name, url, tag, attrs) {
-		this.name = namel;
+		this.name = name;
 		this.url = url;
 		this.tag = tag;
 		this.attrs = attrs;
