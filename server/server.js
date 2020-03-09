@@ -21,3 +21,11 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
 	res.send('Hey Jude');
 });
+
+app.get('/users', (req, res) => {
+	con.query('SELECT * FROM user', (error, results, fields) => {
+		if (error) throw error;
+		console.log(results[0].id);
+		res.status(200).json(results);
+	});
+});
