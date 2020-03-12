@@ -1,4 +1,4 @@
--- CREATE DATABASE shop_cheaper;
+CREATE DATABASE shopCheaper;
 
 CREATE TABLE store (
   store_name VARCHAR(255) PRIMARY KEY,
@@ -33,7 +33,7 @@ CREATE TABLE alert (
 );
 
 CREATE TABLE item_price (
-  recorded_at DATETIME,
+  recorded_at DATETIME DEFAULT NOW(),
   item_id INT NOT NULL,
   store_name VARCHAR(255) NOT NULL,
   price REAL NOT NULL,
