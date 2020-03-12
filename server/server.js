@@ -19,13 +19,25 @@ app.listen(PORT, () => {
 });
 
 app.get('/', (req, res) => {
-	res.send('Hey Jude');
+	res.send('welcome');
 });
 
-app.get('/users', (req, res) => {
+app.get('/api/users', (req, res) => {
 	con.query('SELECT * FROM user', (error, results, fields) => {
 		if (error) throw error;
 		console.log(results[0].id);
 		res.status(200).json(results);
+	});
+});
+
+app.post('/api/store/item/price', (req, res) => {
+	const { itemId, storeName, price } = req.body;
+	const q = `INSERT INTO item_price (item_id, storeName, price) VALUES (${itemId}, "${storeName}", ${price})`;
+	con.query(q, (err, result) => {
+		if (err) console.error(err);
+		else {
+			console.log(result);
+			res.status(200).json(result);
+		}
 	});
 });
