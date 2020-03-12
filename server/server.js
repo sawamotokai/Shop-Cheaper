@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
 app.use(express.json());
-
+app.use(bodyParser.urlencoded({ extended: true }));
 dotenv.config();
 
 const con = mysql.createConnection({
@@ -43,6 +44,7 @@ app.post('/api/item/price', (req, res) => {
 });
 
 app.post('/api/store', (req, res) => {
+	console.log(req.body);
 	const { columns, values } = makeQueryForStore(req.body);
 	const q = `INSERT INTO store (${columns}) VALUES (${values})`;
 	con.query(q, (err, result) => {
@@ -55,10 +57,10 @@ app.post('/api/store', (req, res) => {
 });
 
 const makeQueryForStore = ({ storeName, urlPrefix, htmlTag, htmlId, htmlClass }) => {
-	let values = `${storeName}, ${urlPrefix}`;
-	if (htmlTag) values += `, ${htmlTag}`;
-	if (htmlId) values += `, ${htmlId}`;
-	if (htmlClass) values += `, ${htmlClass}`;
+	let values = `"${storeName}", "${urlPrefix}"`;
+	if (htmlTag) values += `, "${htmlTag}"`;
+	if (htmlId) values += `, "${htmlId}"`;
+	if (htmlClass) values += `, "${htmlClass}"`;
 
 	let columns = `store_name, url_prefix`;
 	if (htmlTag) columns += `, html_tag`;

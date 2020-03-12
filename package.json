@@ -7,6 +7,10 @@
 		"server": "cd server && nodemon server.js",
 		"client": "cd client && npm start",
 		"scrape": "cd script && node scrape.js",
+		"stop": "taskkill -f -im node.exe",
+		"restart": "pkill -9 node && start",
+		"kill": "pkill -9 node",
+		"server:restart": "kill -9 $(lsof -t -i:1000) && npm run server",
 		"dev": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"repository": {
@@ -22,6 +26,7 @@
 	"homepage": "https://github.com/sawamotokai/Price-Tracker#readme",
 	"dependencies": {
 		"axios": "^0.19.2",
+		"body-parser": "^1.19.0",
 		"cheerio": "^1.0.0-rc.3",
 		"concurrently": "^5.1.0",
 		"dotenv": "^8.2.0",
