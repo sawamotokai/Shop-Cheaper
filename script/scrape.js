@@ -1,3 +1,4 @@
+const axios = require('axios');
 const puppeteer = require('puppeteer');
 
 const URL =
@@ -7,8 +8,16 @@ const URL =
 	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
 	await page.goto(URL);
+	// goes over alert table and scrapes all items and sends alle`rts if necessary.
 	const textContent = await page.evaluate(() => document.querySelector('#price_inside_buybox').textContent);
 	console.log(textContent);
-
+	const reg = /[0-9,.]+/;
+	const price = textContent.match(reg)[0].replace(',', '');
+	console.log(price);
+	// axios.post('/api/item/price', {
+	// 	itemId: itemId,
+	// 	storeName: storeName,
+	// 	price: price
+	// });
 	await browser.close();
 })();

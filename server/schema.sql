@@ -3,8 +3,9 @@ CREATE DATABASE shopCheaper;
 CREATE TABLE store (
   store_name VARCHAR(255) PRIMARY KEY,
   url_prefix VARCHAR(255) NOT NULL UNIQUE,
-  tag VARCHAR(255) NOT NULL,
-  attrs VARCHAR(255) NOT NULL
+  html_tag VARCHAR(255) NOT NULL,
+  html_id VARCHAR(255),
+  html_class VARCHAR(255)
 );
 
 CREATE TABLE user (
