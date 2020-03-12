@@ -43,6 +43,24 @@ app.post('/api/item/price', (req, res) => {
 	});
 });
 
+app.post('/api/item', (req, res) => {
+	const { store_name, item_url, user_id } = req.body;
+	// id INT NOT NULL AUTO_INCREMENT,
+	// store_name VARCHAR(255) NOT NULL,
+	// item_url VARCHAR(255) NOT NULL,
+});
+
+app.get('/api/stores', (req, res) => {
+	const q = `SELECT * FROM store`;
+	con.query(q, (err, result) => {
+		if (err) console.error(err);
+		else {
+			// console.log(result);
+			res.status(200).json(result);
+		}
+	});
+});
+
 app.post('/api/store', (req, res) => {
 	console.log(req.body);
 	const { columns, values } = makeQueryForStore(req.body);
