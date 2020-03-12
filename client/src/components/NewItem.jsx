@@ -14,7 +14,7 @@ export const NewItem = () => {
 
 	return (
 		<div>
-			<form action="/api/store" method="post">
+			<form action="/api/item" method="post">
 				<label htmlFor="storeDropdown">Online Store Name</label>
 				<select id="storeDropdown">
 					{stores.map((store) => (
