@@ -5,8 +5,8 @@ const axios = require('axios');
 export const NewItem = () => {
 	const [ stores, setStores ] = useState([]);
 	const loadStores = async () => {
-		const res = await axios.get('/api/stores');
-		setStores(res.data);
+		const res = await axios.get('/api/stores'); // what if this fails?
+		setStores(res.data.sort());
 	};
 	useEffect(() => {
 		loadStores();
@@ -16,7 +16,7 @@ export const NewItem = () => {
 		<div>
 			<form action="/api/item" method="post">
 				<label htmlFor="storeDropdown">Online Store Name</label>
-				<select id="storeDropdown">
+				<select id="storeDropdown" name="storeName">
 					{stores.map((store) => (
 						<option key={store.store_name} value={store.store_name}>
 							{store.store_name}

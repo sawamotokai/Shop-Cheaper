@@ -17,8 +17,8 @@ CREATE TABLE user (
 CREATE TABLE item (
   id INT NOT NULL AUTO_INCREMENT,
   store_name VARCHAR(255) NOT NULL,
-  item_url VARCHAR(255) NOT NULL,
-  PRIMARY KEY (id, store_name),
+  item_url VARCHAR(255) NOT NULL UNIQUE,
+  PRIMARY KEY (store_name, item_url),
   FOREIGN KEY (store_name) REFERENCES store(store_name) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

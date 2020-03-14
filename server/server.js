@@ -15,6 +15,7 @@ const con = mysql.createConnection({
 });
 
 const PORT = 1000;
+
 app.listen(process.env.PORT || PORT, () => {
 	console.log(`Server started on http://localhost:${PORT}`);
 });
@@ -33,7 +34,7 @@ app.get('/api/users', (req, res) => {
 
 app.post('/api/item/price', (req, res) => {
 	const { itemId, storeName, price } = req.body;
-	const q = `INSERT INTO item_price (item_id, storeName, price) VALUES (${itemId}, "${storeName}", ${price})`;
+	const q = `INSERT INTO item_price (item_id, store_name, price) VALUES (${itemId}, "${storeName}", ${price})`;
 	con.query(q, (err, result) => {
 		if (err) console.error(err);
 		else {
@@ -44,10 +45,16 @@ app.post('/api/item/price', (req, res) => {
 });
 
 app.post('/api/item', (req, res) => {
-	const { store_name, item_url, user_id } = req.body;
-	// id INT NOT NULL AUTO_INCREMENT,
-	// store_name VARCHAR(255) NOT NULL,
-	// item_url VARCHAR(255) NOT NULL,
+	const { storeName, itemURL } = req.body;
+	console.log(req.body);
+	const q = `INSERT INTO item (store_name, item_url) VALUES ("${storeName}", "${itemURL}")`;
+	con.query(q, (err, result) => {
+		if (err) console.error(err);
+		else {
+			console.log(result);
+			res.status(200).json(result);
+		}
+	});
 });
 
 app.get('/api/stores', (req, res) => {
@@ -55,7 +62,7 @@ app.get('/api/stores', (req, res) => {
 	con.query(q, (err, result) => {
 		if (err) console.error(err);
 		else {
-			// console.log(result);
+			console.log(result);
 			res.status(200).json(result);
 		}
 	});
