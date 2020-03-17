@@ -1,4 +1,5 @@
 CREATE DATABASE shopCheaper;
+USE shopCheaper;
 
 CREATE TABLE store (
   store_name VARCHAR(255) PRIMARY KEY,
@@ -16,9 +17,10 @@ CREATE TABLE user (
 
 CREATE TABLE item (
   id INT NOT NULL AUTO_INCREMENT,
+  item_url VARCHAR(513) NOT NULL UNIQUE,
   store_name VARCHAR(255) NOT NULL,
-  item_url VARCHAR(255) NOT NULL UNIQUE,
   PRIMARY KEY (store_name, item_url),
+  KEY(id),
   FOREIGN KEY (store_name) REFERENCES store(store_name) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -28,6 +30,7 @@ CREATE TABLE alert (
   item_id INT NOT NULL,
   store_name VARCHAR(255) NOT NULL,
   price_limit REAL NOT NULL,
+  is_on BIT DEFAULT 1,
   last_notified DATETIME DEFAULT NOW(),
   CONSTRAINT FK_alert_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FK_alert_item FOREIGN KEY (item_id, store_name) REFERENCES item(id, store_name) ON DELETE NO ACTION ON UPDATE CASCADE
