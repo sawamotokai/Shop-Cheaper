@@ -52,9 +52,3 @@ const con = mysql.createConnection({
 })().then(() => {
 	process.exit(0);
 });
-
-// axios.post('/api/item/price', {
-// 	itemId: itemId,
-// 	storeName: storeName,
-// 	price: price
-// });

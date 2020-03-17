@@ -7,8 +7,8 @@ export const NewStore = () => {
 				<div className="storeInfo">
 					<label htmlFor="storeName">Online Store Name</label>
 					<input type="text" name="storeName" id="storeName" required />
-					<label htmlFor="storeRootURL">Store's URL prefix</label>
-					<input type="text" name="storeRootURL" id="storeRootURL" required />
+					<label htmlFor="urlPrefix">Store's URL prefix</label>
+					<input type="text" name="urlPrefix" id="urlPrefix" required />
 				</div>
 
 				<div className="htmlInfo">
