@@ -17,26 +17,62 @@ const con = mysql.createConnection({
 (async () => {
 	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
-	await page.goto(URL);
-	const res = new Promise((resolve, reject) => {
+	// await page.goto(URL);
+	const itemQuery = new Promise((resolve, reject) => {
 		con.query('SELECT * FROM item', (error, results, fields) => {
 			if (error) return console.error(error);
-			console.log(results[0].id);
 			resolve(results);
 		});
 	});
-	const items = await res.catch((err) => console.error(err));
+	const items = await itemQuery.catch((err) => console.error(err));
 	console.log(items);
+	let URLs = [];
+	let storeNames = new Set();
+	for (let item of items) {
+		URLs.push(page.goto(item.item_url));
+		storeNames.add(item.store_name);
+	}
+	let storeNameText = '';
+	for (let storeName of storeNames) storeNameText += `"${storeName}", `;
+	storeNameText = storeNameText.slice(0, storeNameText.length - 2);
+	let q = `SELECT * FROM store WHERE store_name IN (${storeNameText}) ORDER BY store_name`;
+	const storeQuery = new Promise((resolve, reject) => {
+		con.query(q, (error, results, fields) => {
+			if (error) return console.error(error);
+			resolve(results);
+		});
+	});
+	let itemPages = await Promise.all(URLs);
+	for (let i = 0; i < items.length; i++) {
+		let item = items[i];
+		item['page'] = itemPages[i];
+	}
+	let stores = await storeQuery.catch((err) => console.error(err));
+	let textData = [];
+	console.log(stores);
+	for (let item of items) {
+		let selector;
+		for (let store of stores) {
+			if (store.store_name == item.store_name) {
+				if (item.html_id != null) selector = `#${item.html_id}`;
+				else selector = `${item.html_tag}.${item.html_class}`;
+			}
+		}
+		textData.push(page.evaluate(() => document.querySelector(selector).textContent));
+	}
+	const texts = await Promise.all(textData);
 	// goes over alert table and scrapes all items and sends alle`rts if necessary.
-	const textContent = await page.evaluate(() => document.querySelector('#price_inside_buybox').textContent);
-	console.log(textContent);
+	// const textContent = await page.evaluate(() => document.querySelector('#price_inside_buybox').textContent);
+	// console.log(textContent);
 	const reg = /[0-9,.]+/;
-	const price = textContent.match(reg)[0].replace(',', '');
-	console.log(price);
-	// axios.post('/api/item/price', {
-	// 	itemId: itemId,
-	// 	storeName: storeName,
-	// 	price: price
-	// });
+	const prices = texts.map((text) => text.match(reg)[0].replace(',', ''));
+	console.log(prices);
+
 	await browser.close();
 })();
+
+// axios.post('/api/item/price', {
+// 	itemId: itemId,
+// 	storeName: storeName,
+// 	price: price
+// });
