@@ -39,7 +39,7 @@ CREATE TABLE alert (
 CREATE TABLE item_price (
   recorded_at DATETIME DEFAULT NOW(),
   item_id INT NOT NULL,
-  store_name VARCHAR(255) NOT NULL,
+  store_name VARCHAR(50),
   price REAL NOT NULL,
   PRIMARY KEY (recorded_at, item_id, store_name),
   CONSTRAINT FK_item_price FOREIGN KEY (item_id, store_name) REFERENCES item(id, store_name) ON DELETE CASCADE ON UPDATE CASCADE

@@ -17,12 +17,13 @@ const con = mysql.createConnection({
 
 	const itemQuery = new Promise((resolve, reject) => {
 		con.query('SELECT * FROM item i, store s WHERE i.store_name = s.store_name', (error, results, fields) => {
-			if (error) return console.error(error);
+			if (error) return reject(error);
 			resolve(results);
 		});
 	});
 	const items = await itemQuery.catch((err) => console.error(err));
 
+	let data = [];
 	for (let item of items) {
 		await page.goto(item.item_url);
 
@@ -30,20 +31,27 @@ const con = mysql.createConnection({
 		if (item.html_id != null) selector = `#${item.html_id}`;
 		else selector = `${item.html_tag}.${item.html_class}`;
 		console.log(selector);
-
 		const textContent = await page
 			.evaluate((selector) => document.querySelector(selector).textContent, selector)
 			.catch((err) => console.error(err));
-		// const textContent = await page.evaluate(() => document.querySelector('#price_inside_buybox').textContent);
-
-		console.log(textContent);
 		const reg = /[0-9,.]+/;
 		const price = textContent.match(reg)[0].replace(',', '');
 		console.log(price);
+		data.push([ item.store_name, item.id, price ]);
 	}
+	let priceQuery = new Promise((resolve, reject) => {
+		con.query(`INSERT INTO item_price (store_name, item_id, price) VALUES ?`, [ data ], (error, result) => {
+			if (error) return reject(error);
+			resolve(result);
+		});
+	});
+	const res = await priceQuery;
+	console.log(res);
 
 	await browser.close();
-})();
+})().then(() => {
+	process.exit(0);
+});
 
 // axios.post('/api/item/price', {
 // 	itemId: itemId,
