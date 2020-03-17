@@ -23,8 +23,9 @@ export const NewItem = () => {
 						</option>
 					))}
 				</select>
-
-				<label htmlFor="itemURL">Item's URL</label>
+				<label htmlFor="itemName">Item Name</label>
+				<input type="text" name="itemName" id="itemName" required />
+				<label htmlFor="itemURL">Item URL</label>
 				<input type="text" name="itemURL" id="itemURL" required />
 				<button type="submit">Create</button>
 			</form>

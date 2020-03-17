@@ -19,6 +19,7 @@ CREATE TABLE item (
   id INT NOT NULL AUTO_INCREMENT,
   item_url VARCHAR(513) NOT NULL UNIQUE,
   store_name VARCHAR(255) NOT NULL,
+  item_name VARCHAR(255) NOT NULL,
   PRIMARY KEY (store_name, item_url),
   KEY(id),
   FOREIGN KEY (store_name) REFERENCES store(store_name) ON DELETE CASCADE ON UPDATE CASCADE

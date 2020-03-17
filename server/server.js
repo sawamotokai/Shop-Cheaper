@@ -45,9 +45,9 @@ app.post('/api/item/price', (req, res) => {
 });
 
 app.post('/api/item', (req, res) => {
-	const { storeName, itemURL } = req.body;
+	const { storeName, itemURL, itemName } = req.body;
 	console.log(req.body);
-	const q = `INSERT INTO item (store_name, item_url) VALUES ("${storeName}", "${itemURL}")`;
+	const q = `INSERT INTO item (store_name, item_url, item_name) VALUES ("${storeName}", "${itemURL}", "${itemName})`;
 	con.query(q, (err, result) => {
 		if (err) console.error(err);
 		else {

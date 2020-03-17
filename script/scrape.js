@@ -30,13 +30,12 @@ const con = mysql.createConnection({
 		var selector = '';
 		if (item.html_id != null) selector = `#${item.html_id}`;
 		else selector = `${item.html_tag}.${item.html_class}`;
-		console.log(selector);
 		const textContent = await page
 			.evaluate((selector) => document.querySelector(selector).textContent, selector)
 			.catch((err) => console.error(err));
 		const reg = /[0-9,.]+/;
 		const price = textContent.match(reg)[0].replace(',', '');
-		console.log(price);
+		console.log(`Price of ${item.item_name} \n on ${item.store_name} is ${price} currently.\n`);
 		data.push([ item.store_name, item.id, price ]);
 	}
 	let priceQuery = new Promise((resolve, reject) => {
@@ -46,7 +45,7 @@ const con = mysql.createConnection({
 		});
 	});
 	const res = await priceQuery;
-	console.log(res);
+	// console.log(res);
 
 	await browser.close();
 })().then(() => {
